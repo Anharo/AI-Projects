@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helmet Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .video-container {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Helmet Detection - Real-Time Stream</h1>
+    <div class="container">
+        <div class="video-container">
+            <img src="/video_feed" style="width: 100%; height: auto;" alt="Video Stream">
+        </div>
+        <div class="controls">
+            <button id="toggle-button">Disable Detection</button>
+        </div>
+    </div>
+    <script>
+        const button = document.getElementById("toggle-button");
+
+        button.addEventListener("click", () => {
+            fetch("/toggle_detection", { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    const status = data.status;
+                    if (status === "enabled") {
+                        button.textContent = "Disable Detection";
+                    } else {
+                        button.textContent = "Enable Detection";
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
