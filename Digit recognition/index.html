@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .canvas-container {
+            position: relative;
+        }
+        #drawingCanvas {
+            background-color: #2D004D; /* Dark purple background */
+            border: 1px solid #000;
+            margin-bottom: 10px;
+            image-rendering: pixelated;
+        }
+        #pixelCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        button {
+            margin-right: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Digit Recognition</h1>
+        <div class="canvas-container">
+            <canvas id="drawingCanvas" width="280" height="280"></canvas>
+            <canvas id="pixelCanvas" width="28" height="28"></canvas>
+        </div>
+        <div>
+            <button id="predictBtn">Predict</button>
+            <button id="clearBtn">Clear</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const drawingCanvas = document.getElementById('drawingCanvas');
+        const pixelCanvas = document.getElementById('pixelCanvas');
+        const drawingCtx = drawingCanvas.getContext('2d');
+        const pixelCtx = pixelCanvas.getContext('2d');
+        let isDrawing = false;
+
+        drawingCtx.lineWidth = 20;
+        drawingCtx.lineCap = 'round';
+        drawingCtx.strokeStyle = '#FFE135'; // Bright yellow color
+
+        drawingCtx.fillStyle = '#2D004D';
+        drawingCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+
+        pixelCanvas.style.width = '280px';
+        pixelCanvas.style.height = '280px';
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = drawingCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            drawingCtx.lineTo(x, y);
+            drawingCtx.stroke();
+            drawingCtx.beginPath();
+            drawingCtx.moveTo(x, y);
+
+            updatePixelatedPreview();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            drawingCtx.beginPath();
+        }
+
+        function clearCanvas() {
+            drawingCtx.fillStyle = '#2D004D';
+            drawingCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+            pixelCtx.clearRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function updatePixelatedPreview() {
+            pixelCtx.clearRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+            pixelCtx.drawImage(drawingCanvas,
+                0, 0, drawingCanvas.width, drawingCanvas.height,
+                0, 0, 28, 28
+            );
+        }
+
+        function predict() {
+            const imageData = pixelCanvas.toDataURL('image/png');
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image: imageData }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultHTML = '<h2>Prediction:</h2><ul>';
+                data.prediction.forEach((prob, index) => {
+                    resultHTML += `<li>Digit ${index}: ${(prob * 100).toFixed(2)}%</li>`;
+                });
+                resultHTML += '</ul>';
+                document.getElementById('result').innerHTML = resultHTML;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'An error occurred during prediction.';
+            });
+        }
+
+        drawingCanvas.addEventListener('mousedown', startDrawing);
+        drawingCanvas.addEventListener('mousemove', draw);
+        drawingCanvas.addEventListener('mouseup', stopDrawing);
+        drawingCanvas.addEventListener('mouseout', stopDrawing);
+        document.getElementById('predictBtn').addEventListener('click', predict);
+        document.getElementById('clearBtn').addEventListener('click', clearCanvas);
+    </script>
+</body>
+</html>
