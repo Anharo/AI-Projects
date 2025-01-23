@@ -5,7 +5,7 @@ This project is a helmet detection system built using the YOLO (You Only Look On
 ## Features
 - **Real-Time Detection**: Accurately detects helmets on individuals in real-time from live video feeds or uploaded media.
 - **YOLO Model**: Utilizes the YOLO architecture for fast and efficient object detection.
-- **Interactive Web Interface**: A user-friendly frontend where users can upload images or video clips for analysis.
+- **Interactive Web Interface**: A user-friendly frontend where it uses real time detection ie uses webcam for the detection.
 
 ## How the Project Was Built
 ### 1. Model Training
@@ -24,9 +24,9 @@ This project is a helmet detection system built using the YOLO (You Only Look On
 
 ## How to Use
 1. Clone the repository to your local machine.
-2. Install the required dependencies (listed in `requirements.txt`).
+2. Install the required dependencies.
 3. Run the Flask application to start the web server.
-4. Access the web interface in your browser, where you can upload images, video clips, or connect a live video feed.
+4. Access the web interface in your browser, where you can connect a live video feed.
 5. View the real-time detection results with highlighted helmets or non-helmet areas.
 
 ## Applications
