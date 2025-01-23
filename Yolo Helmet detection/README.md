@@ -1,4 +1,4 @@
-Helmet Detection Model
+###Helmet Detection Model
 
 This project is a helmet detection system built using the YOLO (You Only Look Once) object detection model. It is designed to detect whether a person is wearing a helmet or not, aiming to promote safety and compliance in various scenarios such as road traffic monitoring or workplace safety inspections.
 
