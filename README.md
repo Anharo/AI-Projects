@@ -33,6 +33,4 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ## License
 
 This project is licensed under the GNU General Public License v3.0.
-```
 
-Feel free to modify the content to better fit your project. Let me know if you need any additional information or changes.
