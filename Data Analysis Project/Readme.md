@@ -6,18 +6,7 @@ Currently, this repository features one guided project titled **"Drugged Islande
 
 ---
 
-## 📁 Repository Structure
-
-Data-Analysis-Projects/
-│
-├── Guided_Projects/
-│ └── Drugged_Islanders/
-│ └── drugged_islanders_analysis.ipynb
-│
-├── Self_Learned_Projects/ # (Empty for now)
-│
-└── README.md
-
+<pre> ## 📁 Repository Structure ``` Data-Analysis-Projects/ │ ├── Guided_Projects/ │ └── Drugged_Islanders/ │ └── drugged_islanders_analysis.ipynb │ ├── Self_Learned_Projects/ # (Empty for now) │ └── README.md ``` </pre
 
 ---
 
