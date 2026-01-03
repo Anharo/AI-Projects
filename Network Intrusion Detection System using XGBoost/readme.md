@@ -89,7 +89,7 @@ The confusion matrix below shows the model’s performance at the selected thres
 ```
 network-intrusion-detection-xgboost/
 │
-├── notebooks/
+├── Notebook/
 │   └── Network_Intrusion_Detection_XGBoost.ipynb
 │
 ├── images/
